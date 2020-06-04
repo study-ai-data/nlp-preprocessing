@@ -5,6 +5,11 @@ import os
 import preprocess.naver_spell_check as nsc
 
 
+def check_tgt_folder(targetPath):
+    if not os.path.isdir(targetPath):
+        os.mkdir(targetPath)
+
+
 def get_current_path():
     path = os.getcwd()
     print("\n [[Check your path]] ", path, "\n")
@@ -17,17 +22,19 @@ def get_text_list(path):
 
 
 def load_text(filePath):
-    filename = os.path.splitext(filePath)[0]
+    print("\n [[Load text file]]", filePath)
+    filename = os.path.splitext(filePath)[0].replace(os.getcwd()+"/data/", "")
     with open(filePath, 'r', encoding="utf-8") as f:
         text = f.readlines()
     return filename, text
 
 
 def save_text(filePath, contents):
+    check_tgt_folder(os.getcwd() + "/data/tgt/")
+    print(" [[Save text file]] ", filePath)
     file = open(filePath, 'w', encoding='utf-8')
     for content in contents:
-        file.write(content)
-        exit()
+        file.write(content + "\n")
 
 
 def preprocess():
@@ -39,7 +46,8 @@ def preprocess():
     for textFile in textList:
         filename, texts = load_text(path + "/data/" + textFile)
         result = nsc.naver_spell_check(texts)
-        save_text(path + "/data/tgt" + filename + "_naver.txt", result)
+        filePath = os.getcwd() + "/data/tgt/" + filename + "_naver.txt"
+        save_text(filePath, result)
 
 
 if __name__ == "__main__":
