@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import preprocess.naver_spell_check as nsc
+from preprocess import naver_spell_check
 
 
 def check_tgt_folder(targetPath):
@@ -45,7 +45,8 @@ def preprocess():
     # pre-processing each text files
     for textFile in textList:
         filename, texts = load_text(path + "/data/" + textFile)
-        result = nsc.naver_spell_check(texts)
+        result = naver_spell_check(texts)
+        print(result)
         filePath = os.getcwd() + "/data/tgt/" + filename + "_naver.txt"
         save_text(filePath, result)
 

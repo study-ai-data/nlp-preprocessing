@@ -1,11 +1,15 @@
 from hanspell import spell_checker
 
+from preprocess.regex import del_special_char
+
 
 def naver_spell_check(texts):
     result = list()
-    for texts in texts:
-        tmp = spell_checker.check(texts)
-        result.append(tmp.only_checked())
+    for text in texts:
+        tmp = spell_checker.check(text)
+        tmp_result = tmp.only_checked()
+        regexed = del_special_char(tmp_result)
+        result.append(regexed)
     return result
 
 
